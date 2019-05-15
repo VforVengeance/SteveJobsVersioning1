@@ -10,4 +10,17 @@ router.post('/', function(req, res, next) {
     })
 })
 
+router.delete('/:id', function(req, res, next) {
+  User.findOne({_id: req.params.id})
+    .exec(function(err, user) {
+      if(err) return res.status(500).json({error: err});
+      if(!user) return res.status(404).json({message: 'Utente non trovato'});
+      User.remove({_id: req.params.id}, function(err) {
+        if(err) return res.status(500).json({error: err})
+        res.json({message: 'Utente eliminato correttamente'})
+      })
+    })
+    
+})
+
 module.exports = router
